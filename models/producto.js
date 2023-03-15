@@ -27,6 +27,10 @@ const ProductoSchema = Schema({
     },
     descripcion: { 
         type: String 
+    },
+    stock:{
+        type: Number,
+        required: true
     }
 });
 

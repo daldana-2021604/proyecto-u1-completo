@@ -13,6 +13,13 @@ const emailExiste = async( correo = '' ) => {
     }
 }
 
+const productoExiste = async( nombre = '' ) => {
+    const existeProducto = await Producto.findOne( { nombre } );
+    if ( existeProducto) {
+        throw new Error(`El producto ${ nombre }, ya esta registrado en la DB `);
+    }
+}
+
 const esRoleValido = async( rol = '') => {
     //Verificar si el rol es valido y existe en la DB
     const existeRolDB = await Role.findOne( { rol } );
@@ -65,6 +72,7 @@ const existeVentaPorId = async( id ) => {
 
 module.exports = {
     emailExiste,
+    productoExiste,
     esRoleValido,
     existeUsuarioPorId,
     existeCategoriaPorId,

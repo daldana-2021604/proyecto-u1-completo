@@ -22,6 +22,7 @@ router.put('/editar/:id',[
     check('id', 'No es un id de mongo valido').isMongoId(),
     check('producto').custom(existeProductoPorId),
     check('id').custom(existeVentaPorId),
+    check('cantidad', 'se necesita una cantidad para la compra').not().isEmpty(),
     validarJWT,
     validarCampos
 ], putCarritoCompras);

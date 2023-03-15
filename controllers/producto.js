@@ -22,6 +22,32 @@ const obtenerProductos = async (req = request, res = response) => {
 
 }
 
+const productosAgotados = async (req = require, res= response) =>{
+    const query = {stock: 0};
+
+    const listaProductos = await Promise.all([
+        Producto.countDocuments(query),
+        Producto.find(query)
+        .populate('usuario', 'nombre')
+        .populate('categoria', 'nombre')
+    ])
+
+    res.json({
+        msg: 'GET API de usuarios',
+        listaProductos
+    });
+}
+
+const productosMasVendidos = async(req= require, res= response) =>{
+
+    const listaProductos = await Producto.find().sort({stock: 1})
+
+    res.json({
+        msg: 'GET API de usuarios',
+        listaProductos
+    });
+}
+
 const obtenerProductoPorId = async (req = request, res = response) => {
 
     const { id } = req.params;
@@ -140,6 +166,8 @@ const eliminarProducto = async (req = request, res = response) => {
 
 module.exports = {
     obtenerProductos,
+    productosAgotados,
+    productosMasVendidos,
     obtenerProductoPorId,
     obtenerProductoPorNombre,
     obtenerProductoPorCategoria,

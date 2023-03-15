@@ -27,6 +27,8 @@ router.post('/agregar', [
 
 
 router.put('/editar/:id',[
+    validarJWT,
+    esAdminRole,
     check('id', 'No es un ID valido').isMongoId(),
     check('id').custom( existeUsuarioPorId ),
     check('correo', 'El correo no es valido').isEmail(),

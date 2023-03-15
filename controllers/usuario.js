@@ -42,7 +42,7 @@ const postUsuario = async (req = request, res = response) => {
 
 }
 
-const putUsuario = async (req = request, res = response) => {
+const putUsuario = async (req = request, res = response, next) => {
 
     const { id } = req.params;
 
@@ -64,7 +64,7 @@ const putUsuario = async (req = request, res = response) => {
 }
 
 
-const deleteUsuario = async (req = request, res = response) => {
+const deleteUsuario = async (req = request, res = response, next) => {
 
     const { id } = req.params;
 

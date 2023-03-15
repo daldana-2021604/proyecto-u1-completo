@@ -15,6 +15,10 @@ const VentaSchema = Schema({
         type: Boolean,
         default: true,
         required: true
+    },
+    cantidad: {
+        type: Number,
+        required: true
     }
 })
 

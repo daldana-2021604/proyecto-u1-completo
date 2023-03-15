@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 
-const { existeProductoPorId, existeCategoriaPorId } = require('../helpers/db-validators');
+const { existeProductoPorId, existeCategoriaPorId, productoExiste } = require('../helpers/db-validators');
 
 // Middlewares
 const { validarCampos } = require('../middlewares/validar-campos');
@@ -15,15 +15,21 @@ const { obtenerProductos,
         actualizarProducto,
         eliminarProducto, 
         obtenerProductoPorCategoria,
-        obtenerProductoPorNombre} = require('../controllers/producto');
+        obtenerProductoPorNombre,
+        productosAgotados,
+        productosMasVendidos} = require('../controllers/producto');
 
 const router = Router();
 
 // Obtener todas los productos - publico
 router.get('/', obtenerProductos);
 
+router.get('/agotados', productosAgotados);
+
+router.get('/masVendidos', productosMasVendidos);
+
 // Obtener un producto por el id - publico
-router.get('/:id', [
+router.get('/mostrar/:id', [
     check('id', 'No es un id de mongo valido').isMongoId(),
     check('id').custom( existeProductoPorId ),
     validarCampos
@@ -36,8 +42,10 @@ router.post('/buscar-por-categoria',obtenerProductoPorCategoria);
 // Crear Producto - privado - cualquier persona con un token valido
 router.post('/agregar', [
     validarJWT,
+    check('id').custom(productoExiste),
     check('nombre', 'El nombre del producto es obligatorio').not().isEmpty(),
     check('categoria').custom(existeCategoriaPorId),
+    check('stock', 'El stock es un campo obligatorio').not().isEmpty(),
     validarCampos
 ], crearProducto);
 
